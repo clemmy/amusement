@@ -1,10 +1,17 @@
 'use strict';
 
 angular.module('amusement')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    .controller('MainCtrl', MainCtrl);
+
+MainCtrl.$inject = ['$scope'];
+
+function MainCtrl($scope) {
+    var self = this;
+    $scope.MainCtrl = self;
+
+    self.getState = getState;
+
+    function getState() {
+        return 'Neutral';
+    }
+}
