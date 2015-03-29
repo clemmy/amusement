@@ -11,19 +11,18 @@ function MainCtrl($scope, poller, musePackets) {
 
     self.getState = getState;
     self.lastMusePacketsReceived = null;
+    self.normalizedConcentration = 50;
 
     pollMusePackets();
 
     function getState() {
-
-        var value = calculateNormalizedConcentration();
         var stateName = 'Neutral';
 
-        if (value >= 0 && value <= 33.3333) {
+        if (self.normalizedConcentration>= 0 && self.normalizedConcentration <= 33.3333) {
             stateName = 'Sleepy';
-        } else if (value >=33.3333 && value <= 66.6666) {
+        } else if (self.normalizedConcentration >=33.3333 && self.normalizedConcentration <= 66.6666) {
             stateName = 'Neutral';
-        } else if (value >= 66.6666 && value <= 100) {
+        } else if (self.normalizedConcentration >= 66.6666 && self.normalizedConcentration <= 100) {
             stateName = 'Raging';
         } else {
             stateName = 'Unknown';
@@ -31,19 +30,20 @@ function MainCtrl($scope, poller, musePackets) {
 
         return {
             name: stateName,
-            value: value
+            value: self.normalizedConcentration
         };
     }
 
     function calculateNormalizedConcentration() {
-        return 33;
+        return Math.random() * 100;
     }
 
     function pollMusePackets() {
-        var musePacketPoller = poller.get(musePackets, {action: 'get', delay: 1000});
+        var musePacketPoller = poller.get(musePackets, {action: 'get', delay: 3000});
 
         musePacketPoller.promise.then(null, null, function (data) {
             self.lastMusePacketsReceived = data;
+            self.normalizedConcentration = calculateNormalizedConcentration();
             console.log('Packets received.');
         });
 
