@@ -8,7 +8,8 @@ angular
         'ngRoute',
         'ngSanitize',
         'ngTouch',
-        'frapontillo.gage.directives'
+        'frapontillo.gage.directives',
+        'emguo.poller'
     ])
     .config(function ($routeProvider) {
         $routeProvider
