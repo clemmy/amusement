@@ -11,7 +11,7 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
 
     self.startedDriving = false;
     self.startDriving = startDriving;
-    self.getState = getState;
+    self.updateState = updateState;
     self.lastMusePacketsReceived = null;
     self.normalizedConcentration = 50;
     self.playAudio = playAudio;
@@ -22,6 +22,10 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         name: null,
         value: null
     };
+    self.currentState = {
+        name: null,
+        value: null
+    };
     self.currentAudio = null;
     self.logOnToSpotify = logOnToSpotify;
 
@@ -29,31 +33,31 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         self.startedDriving = true;
     }
 
-    function getState() {
+    function updateState() {
         var stateName;
 
         if (self.normalizedConcentration>= 0 && self.normalizedConcentration <= 33.3333) { //Sleepy
             stateName = 'Sleepy';
-            if (stateName !== self.previousState) {
-                playAudio(Math.random() * 100 % self.loudTracks.length);
+            if (stateName !== self.previousState.name) {
+                playAudio(self.loudTracks[Math.floor(Math.random()*self.loudTracks.length)]);
             }
         } else if (self.normalizedConcentration >=33.3333 && self.normalizedConcentration <= 66.6666) { //Neutral
             stateName = 'Neutral';
-            if (stateName !== self.previousState) {
+            if (stateName !== self.previousState.name) {
                 stopAudio();
             }
         } else if (self.normalizedConcentration >= 66.6666 && self.normalizedConcentration <= 100) { //Raging
             stateName = 'Raging';
-            if (stateName !== self.previousState) {
-                playAudio(Math.random() * 100 % self.calmingTracks.length);
+            if (stateName !== self.previousState.name) {
+                playAudio(self.calmingTracks[Math.floor(Math.random()*self.calmingTracks.length)]);
             }
         } else {
             stateName = 'Unknown';
             stopAudio();
         }
 
-        self.previousState = stateName;
-        return {
+        self.previousState = self.currentState;
+        self.currentState = {
             name: stateName,
             value: self.normalizedConcentration
         };
@@ -69,6 +73,7 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         musePacketPoller.promise.then(null, null, function (data) {
             self.lastMusePacketsReceived = data;
             self.normalizedConcentration = calculateNormalizedConcentration();
+            self.updateState();
             console.log('Packets received.');
         });
     }
@@ -78,7 +83,9 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
     }
 
     function stopAudio() {
-        self.currentAudio.stop();
+        if (self.currentAudio) {
+            self.currentAudio.stop();
+        }
     }
 
     function logOnToSpotify() {
