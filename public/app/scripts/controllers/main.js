@@ -28,7 +28,7 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
     };
     self.currentAudio = null;
     self.loggedIntoSpotify = false;
-    
+
     function updateState() {
         var stateName;
 
@@ -38,6 +38,9 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
                 if (self.currentAudio) {
                     stopAudio();
                 }
+
+                playAudio('http://127.0.0.1:3000/api/speech?text=hey+man');
+
                 playAudio(self.loudTracks[Math.floor(Math.random()*self.loudTracks.length)]);
             }
         } else if (self.normalizedConcentration >=33.3333 && self.normalizedConcentration <= 66.6666) { //Neutral
@@ -51,6 +54,9 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
                 if (self.currentAudio) {
                     stopAudio();
                 }
+
+                playAudio('http://127.0.0.1:3000/api/speech?text=hey+man');
+
                 playAudio(self.calmingTracks[Math.floor(Math.random()*self.calmingTracks.length)]);
             }
         } else {
@@ -98,6 +104,7 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
     }
 
     function startDriving() {
+        playAudio('http://127.0.0.1:3000/api/speech?text=hey+man');
         Spotify.login().then(function(token) {
 
             Spotify.getPlaylistTracks('kallibri', '6oURs2fLToA0NgO0jvlKLQ').then(function (calmData) {
