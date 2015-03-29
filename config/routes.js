@@ -9,6 +9,10 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/spotify-redirect', function (req, res) {
+        res.sendFile(path.resolve('public/spotify-redirect.html'));
+    });
+
     app.get('*', function (req, res) {
         res.sendFile(path.resolve('public/app/index.html'));
     });
