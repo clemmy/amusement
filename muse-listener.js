@@ -13,9 +13,10 @@ server.on("message", function (msg, rinfo) {
     try {
         var oscData = osc.fromBuffer(msg);
 
-        //if (oscData.address === '/muse/elements/experimental') {
-        if (_.contains(oscData.address, '/muse/elements/experimental')) {
-            return console.log(osc.fromBuffer(msg));
+        if (oscData.address === '/muse/elements/experimental/mellow') {
+            global.lastMellowOscData = oscData;
+        } else if (oscData.address === '/muse/elements/experimental/concentration') {
+            global.lastConcentrationOscData = oscData;
         }
     } catch (_error) {
         error = _error;
