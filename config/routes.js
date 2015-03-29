@@ -10,6 +10,6 @@ module.exports = function (app) {
     });
 
     app.get('*', function (req, res) {
-        res.sendFile(path.resolve('public/dist/index.html'));
+        res.sendFile(path.resolve('public/app/index.html'));
     });
 }
