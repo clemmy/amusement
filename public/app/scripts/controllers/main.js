@@ -28,9 +28,13 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
     };
     self.currentAudio = null;
     self.logOnToSpotify = logOnToSpotify;
+    self.loggedIntoSpotify = false;
 
     function startDriving() {
-        self.startedDriving = true;
+        if (self.loggedIntoSpotify) {
+            self.startedDriving = true;
+            pollMusePackets(); // begin polling.
+        }
     }
 
     function updateState() {
@@ -39,6 +43,9 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         if (self.normalizedConcentration>= 0 && self.normalizedConcentration <= 33.3333) { //Sleepy
             stateName = 'Sleepy';
             if (stateName !== self.previousState.name) {
+                if (self.currentAudio) {
+                    stopAudio();
+                }
                 playAudio(self.loudTracks[Math.floor(Math.random()*self.loudTracks.length)]);
             }
         } else if (self.normalizedConcentration >=33.3333 && self.normalizedConcentration <= 66.6666) { //Neutral
@@ -49,10 +56,16 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         } else if (self.normalizedConcentration >= 66.6666 && self.normalizedConcentration <= 100) { //Raging
             stateName = 'Raging';
             if (stateName !== self.previousState.name) {
+                if (self.currentAudio) {
+                    stopAudio();
+                }
                 playAudio(self.calmingTracks[Math.floor(Math.random()*self.calmingTracks.length)]);
             }
         } else {
             stateName = 'Unknown';
+            if (self.currentAudio) {
+                stopAudio();
+            }
             stopAudio();
         }
 
@@ -64,14 +77,18 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
     }
 
     function calculateNormalizedConcentration() {
-        return Math.random() * 100;
+        return (self.lastMusePacketsReceived.mellow + self.lastMusePacketsReceived.concentration)*50;
     }
 
     function pollMusePackets() {
         var musePacketPoller = poller.get(musePackets, {action: 'get', delay: 3000});
 
         musePacketPoller.promise.then(null, null, function (data) {
-            self.lastMusePacketsReceived = data;
+            self.lastMusePacketsReceived = {
+                concentration: data.concentration.args[0].value,
+                mellow: data.mellow.args[0].value
+            }
+
             self.normalizedConcentration = calculateNormalizedConcentration();
             self.updateState();
             console.log('Packets received.');
@@ -105,7 +122,7 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
 
                     self.loudTracks = self.loudTracks.concat(loudTrackUrls);
 
-                    pollMusePackets(); // begin polling.
+                    self.loggedIntoSpotify = true;
                 });
             });
         });
