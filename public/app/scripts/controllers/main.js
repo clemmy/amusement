@@ -27,16 +27,8 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         value: null
     };
     self.currentAudio = null;
-    self.logOnToSpotify = logOnToSpotify;
     self.loggedIntoSpotify = false;
-
-    function startDriving() {
-        if (self.loggedIntoSpotify) {
-            self.startedDriving = true;
-            pollMusePackets(); // begin polling.
-        }
-    }
-
+    
     function updateState() {
         var stateName;
 
@@ -105,7 +97,7 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
         }
     }
 
-    function logOnToSpotify() {
+    function startDriving() {
         Spotify.login().then(function(token) {
 
             Spotify.getPlaylistTracks('kallibri', '6oURs2fLToA0NgO0jvlKLQ').then(function (calmData) {
@@ -123,6 +115,12 @@ function MainCtrl($scope, poller, musePackets, ngAudio, Spotify) {
                     self.loudTracks = self.loudTracks.concat(loudTrackUrls);
 
                     self.loggedIntoSpotify = true;
+
+                    if (self.loggedIntoSpotify) {
+                        self.startedDriving = true;
+
+                        pollMusePackets(); // begin polling.
+                    }
                 });
             });
         });
