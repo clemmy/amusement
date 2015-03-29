@@ -46,3 +46,6 @@ crashlytics.properties
 crashlytics-build.properties
 
 node_modules/
+public/bower_components/
+public/dist/
+public/.tmp/
