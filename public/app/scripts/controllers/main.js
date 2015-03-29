@@ -9,11 +9,17 @@ function MainCtrl($scope, poller, musePackets) {
     var self = this;
     $scope.MainCtrl = self;
 
+    self.startedDriving = false;
+    self.startDriving = startDriving;
     self.getState = getState;
     self.lastMusePacketsReceived = null;
     self.normalizedConcentration = 50;
 
     pollMusePackets();
+
+    function startDriving() {
+        self.startedDriving = true;
+    }
 
     function getState() {
         var stateName = 'Neutral';
