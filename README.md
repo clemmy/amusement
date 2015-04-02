@@ -1,6 +1,6 @@
 # amusement
 
-Born at HackWestern 2015, aMUSEment is a proof-of-concept that aims to keep the user's head in a calm and composed state by analyzing their EEG activity using the Muse.
+Born at HackWestern 2015, aMUSEment is a proof-of-concept that aims to keep the user's head in a calm and composed state by analyzing their EEG activity using the Muse and playing music from Spotify playlists correspondingly. It is the winner of the Muse sponsor prize, and it can be found on [Challengepost](http://challengepost.com/software/amusement-um9im).
 
 ## Building & Running
 
