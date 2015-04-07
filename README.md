@@ -10,6 +10,7 @@ Born at HackWestern 2015, aMUSEment is a proof-of-concept that aims to keep the 
 4. muse-io --preset 14 --device "Muse-485D" --osc osc.udp://localhost:5000 --dsp
 5. grunt build (Optional, depending on if you point to dist in config/routes.js)
 6. node ../bin/www
+7. Visit it on 127.0.0.1:3000
 
 ## Things you will need:
 
