@@ -4,7 +4,7 @@ Born at HackWestern 2015, aMUSEment is a proof-of-concept that aims to keep the 
 
 ## Building & Running
 
-1. git clone git@github.com:Clemmy/amusement.git
+1. git clone https://github.com/Clemmy/amusement.git
 2. cd amusement && npm install
 3. cd public && npm install && bower install
 4. muse-io --preset 14 --device "Muse-485D" --osc osc.udp://localhost:5000 --dsp
