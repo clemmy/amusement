@@ -8,7 +8,7 @@ Born at HackWestern 2015, aMUSEment is a proof-of-concept that aims to keep the 
 2. cd amusement && npm install
 3. cd public && npm install && bower install
 4. muse-io --preset 14 --device "Muse-485D" --osc osc.udp://localhost:5000 --dsp
-5. grunt build & cd ..
+5. grunt build & cd .. (Optional, depending on if you point to dist in config/routes.js)
 6. node bin/www
 
 ## Things you will need:
